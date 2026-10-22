@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ქვიზ არენა ⚽</title>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: -apple-system, sans-serif;
+            padding: 15px;
+            margin: 0;
+        }
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1e293b;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #334155;
+            text-align: center;
+            font-weight: bold;
+        }
+        .box {
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: #334155;
+            color: white;
+            border: none;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+        }
+        .btn.correct { background-color: #16a34a !important; }
+        .btn.wrong { background-color: #dc2626 !important; }
+        
+        .order-section {
+            background-color: #0f172a;
+            border: 1px solid #0284c7;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: center;
+        }
+        .ig-btn {
+            display: block;
+            background-color: #e1306c;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        დონე: <span id="lvl">1</span> | ქულა: <span id="pts">0</span>
+    </div>
+
+    <div class="box" id="game-box">
+        <h3 id="q-text" style="margin-top:0;">იტვირთება...</h3>
+        <div id="btns"></div>
+    </div>
+
+    <div class="order-section">
+        <h3 style="color: #38bdf8; margin-top:0;">🚀 გინდა შენი საკუთარი ქვიზი?</h3>
+        <p style="color: #94a3b8; font-size: 13px;">შეკვეთებისთვის მოგვწერეთ ინსტაგრამზე!</p>
+        <a href="https://instagram.com/Nikusha_lagvilava" target="_blank" class="ig-btn">
+            📩 შეუკვეთე Instagram-ზე
+        </a>
+    </div>
+</div>
+
+<script>
+    const quiz = [
+        { q: "რომელმა ქვეყანამ მოიგო 2022 წლის მსოფლიო ჩემპიონატი?", a: ["არგენტინა", "საფრანგეთი", "ბრაზილია"], c: 0 },
+        { q: "ვის აქვს ყველაზე მეტი ოქროს ბურთი?", a: ["რონალდუ", "მესი", "მარადონა"], c: 1 },
+        { q: "რომელმა კლუბმა მოიგო ყველაზე მეტჯერ ჩემპიონთა ლიგა?", a: ["ბარსელონა", "ბაიერნი", "რეალ მადრიდი"], c: 2 },
+        { q: "რომელ წელს მოიგო საბერძნეთმა ევროპის ჩემპიონატი?", a: ["2000", "2004", "2008"], c: 1 },
+        { q: "ვინ არის ჩემპიონთა ლიგის ყველა დროის ბომბარდირი?", a: ["რონალდუ", "მესი", "ლევანდოვსკი"], c: 0 }
+    ];
+
+    let index = 0;
+    let score = 0;
+
+    function render() {
+        if (index >= quiz.length) {
+            document.getElementById("game-box").innerHTML = `
+                <h2 style="text-align:center; color:#38bdf8;">🏆 ყოჩაღ!</h2>
+                <p style="text-align:center;">შენი ქულაა: <b>${score} / 50</b></p>
+                <button class="btn" style="text-align:center;" onclick="location.reload()">თავიდან დაწყება 🔄</button>
+            `;
+            return;
+        }
+
+        document.getElementById("lvl").innerText = index + 1;
+        document.getElementById("pts").innerText = score;
+        document.getElementById("q-text").innerText = quiz[index].q;
+        
+        let html = "";
+        quiz[index].a.forEach((opt, i) => {
+            html += `<button class="btn" onclick="check(${i}, this)">${opt}</button>`;
+        });
+        document.getElementById("btns").innerHTML = html;
+    }
+
+    function check(i, btn) {
+        const correct = quiz[index].c;
+        const btns = document.querySelectorAll("#btns .btn");
+
+        if (i === correct) {
+            btn.classList.add("correct");
+            score += 10;
+        } else {
+            btn.classList.add("wrong");
+            btns[correct].classList.add("correct");
+        }
+
+        setTimeout(() => {
+            index++;
+            render();
+        }, 800);
+    }
+
+    render();
+</script>
+
+</body>
+</html>
